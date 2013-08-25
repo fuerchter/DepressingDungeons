@@ -1,9 +1,12 @@
 #include <ctime>
+#include <cstdlib>
 
 #include <string>
 using namespace std;
 
 #include "curses.h"
+
+#include "World.h"
 
 int main()
 {
@@ -14,16 +17,22 @@ int main()
 	keypad(stdscr, true); //arrow keys can be used
 	nodelay(stdscr, true); //getch returns err instead of blocking
 	
-	resize_term(10, 81);
-	int x, y;
-	getmaxyx(stdscr, y, x);
+	int rows=50;
+	int cols=50;
+	resize_term(rows, cols);
 	
 	clock_t curTime=clock();
 	clock_t prevTime=curTime;
 	
+	srand(time(NULL));
+	
+	World world(1, 5, 16, 20, 0, 2, rows, cols);
+	
 	int c;
 	while(true)
 	{
+		//clear();
+		
 		c = getch();
 		if(c==27)
 		{
@@ -39,10 +48,11 @@ int main()
 		//UPDATE
 		
 		//DRAW
-		mvprintw(9, 0, "Keycode: %d, and the character: %c", c, c);
+		//mvprintw(9, 0, "Keycode: %d, and the character: %c", c, c);
+		world.draw();
 		//DRAW
 		
-		refresh();
+		//refresh();
 	}
 	endwin();
 }
